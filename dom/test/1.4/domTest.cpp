@@ -1543,9 +1543,9 @@ int main(int argc, char* argv[]) {
     // Shut the DOM up
     daeErrorHandler::setErrorHandler(&quietErrorHandler::getInstance());
 
-    dataPath() = (fs::path(argv[0]).branch_path()/"domTestData/").normalize();
+    dataPath() = (fs::path(argv[0]).parent_path()/"domTestData/").normalize();
     if (!fs::exists(dataPath()))
-        dataPath() = (fs::path(argv[0]).branch_path()/"../../test/1.4/data/").normalize();
+        dataPath() = (fs::path(argv[0]).parent_path()/"../../test/1.4/data/").normalize();
     tmpPath() = dataPath() / "tmp";
     tmpDir tmp(tmpPath(), !leaveTmpFiles);
 

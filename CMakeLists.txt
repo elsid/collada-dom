@@ -150,7 +150,7 @@ if( MSVC )
   set(Boost_USE_STATIC_RUNTIME OFF)
   set(Boost_CFLAGS "-DBOOST_ALL_DYN_LINK -DBOOST_ALL_NO_LIB")
 endif()
-  
+
 set(Boost_ADDITIONAL_VERSIONS "1.46" "1.45" "1.44" "1.43" "1.42" "1.41" "1.40" "1.39" "1.38" "1.37.0" "1.37" "1.35.0" "1.34.1" "1.34.0" "1.34" "1.33.1" "1.33.0" "1.33")
 
 if( NOT $ENV{BOOST_INCLUDEDIR} STREQUAL "" )
@@ -159,7 +159,7 @@ endif()
 if( NOT $ENV{BOOST_LIBRARYDIR} STREQUAL "" )
   set(Boost_LIBRARY_DIRS $ENV{BOOST_LIBRARYDIR})
 endif()
-find_package(Boost COMPONENTS filesystem system REQUIRED)
+find_package(Boost COMPONENTS filesystem REQUIRED)
 
 message(STATUS "found boost version: ${Boost_VERSION}")
 
@@ -183,7 +183,7 @@ foreach(ldir ${Boost_LIBRARY_DIRS})
   set(COLLADA_DOM_BOOST_LIB_DIRS "${COLLADA_DOM_BOOST_LIB_DIRS} -L${ldir}")
 endforeach()
 
-if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+if(CMAKE_CXX_COMPILER_ID STREQUAL GNU OR CMAKE_CXX_COMPILER_ID STREQUAL Clang)
   set(EXTRA_COMPILE_FLAGS "${COLLADA_DOM_EXTERNAL_FLAGS} -DCOLLADA_DOM_NAMESPACE -fPIC")
 else()
   set(EXTRA_COMPILE_FLAGS "${COLLADA_DOM_EXTERNAL_FLAGS} -DCOLLADA_DOM_NAMESPACE")
@@ -222,7 +222,7 @@ endif()
 
 pkg_check_modules(minizip minizip)
 if(minizip_FOUND)
-  set(MINIZIP_INCLUDE_DIR ${minizip_INCLUDE_DIRS})
+  set(MINIZIP_INCLUDE_DIR "${minizip_INCLUDE_DIRS}/minizip")
 else()
   message(STATUS "compiling minizip from sources and linking statically")
   add_subdirectory(dom/external-libs/minizip-1.1)
@@ -317,7 +317,7 @@ if(CMAKE_CPACK_COMMAND AND UNIX AND OPT_BUILD_PACKAGES)
   set(CPACK_COMPONENT_${COMPONENT_PREFIX_UPPER}-BASE_DISPLAY_NAME "core libraries")
   set(CPACK_COMPONENT_${COMPONENT_PREFIX_UPPER}-DEV_DISPLAY_NAME "C++ headers and build tools")
   set(CPACK_COMPONENT_${COMPONENT_PREFIX_UPPER}-DEV_DEPENDS ${COMPONENT_PREFIX}-base)
-  
+
   set(CPACK_DEBIAN_BUILD_DEPENDS debhelper cmake libxml2-dev libboost-dev zlib1g-dev libboost-filesystem-dev libboost-system-dev libpcre3-dev pkg-config libtinyxml-dev liburiparser-dev CACHE STRING "Build dependency packages")
 
   # debian
